@@ -13,12 +13,12 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 
 @OpenAPIDefinition(info =@Info(
 		contact = @Contact(
-				name = "Ebrain",
-				email = "",
-				url = ""
+				name = "Siva",
+				email = "sivabaskaran2003@gmail.com",
+				url = "https://github.com/47Siva/VaultBill.git"
 				),
-		title = "Application Service API",
-		description = "Provides core services like Authentication, User, Product, Address and Invoice management",
+		title = "VaultBill - Authentication & Billing System",
+		description = "A secure system with JWT Authentication, Role-based Authorization, and Jasper Reports billing.",
 		version = "1.0",
 		license = @License(name = "Licence name",url = "https//some-url.com"),
 		termsOfService = "terms and service"),
