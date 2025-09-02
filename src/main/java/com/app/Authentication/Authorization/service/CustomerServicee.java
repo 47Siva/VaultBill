@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.app.Authentication.Authorization.dto.CustomerAndProductDto;
@@ -19,7 +19,6 @@ import com.app.Authentication.Authorization.entity.Product;
 import com.app.Authentication.Authorization.repository.CustomerProductRepository;
 import com.app.Authentication.Authorization.repository.CustomerRepository;
 import com.app.Authentication.Authorization.repository.ProductRepository;
-import com.app.Authentication.Authorization.request.BuyProductRequest;
 import com.app.Authentication.Authorization.response.CustomerResponse;
 import com.app.Authentication.Authorization.response.InvoiceResponse;
 import com.app.Authentication.Authorization.response.MessageService;
@@ -46,6 +45,7 @@ public class CustomerServicee {
 		return customerRepository.findByDuplicateNumber(mobileNo);
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> getAllCustomer(String auth) {
 
 		Map<String, Object> response = new HashMap<>();

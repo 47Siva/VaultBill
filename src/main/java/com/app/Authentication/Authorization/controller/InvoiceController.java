@@ -77,7 +77,7 @@ public class InvoiceController {
 	@Operation(description = "Get End Point", summary = "This is a get All Customer And ByedProduct Api", responses = {
 			@ApiResponse(description = "Success", responseCode = "200"),
 			@ApiResponse(description = "Unauthorized / Invalid token", responseCode = "401") })
-	@GetMapping("/getAllCustomerAndBuyedProduct")
+	@GetMapping("/getAllCustomerInvoice")
 	public ResponseEntity<?> getAllCustomerAndProduct(@RequestHeader HttpHeaders httpHeaders) {
 		
 		ResponseEntity<?>response = null;
@@ -105,6 +105,48 @@ public class InvoiceController {
 		Customer customer = (Customer) validationResult.getObject();
 		
 		ResponseEntity<?> response = invoiceService.buyProduct(customer,buyProductRequest,RequestType.PUT,id);
+		
+		TransactionContext context = responseGenerator.generateTransationContext(httpHeaders);
+		try {
+			return responseGenerator.successResponse(context, response.getBody(), HttpStatus.OK,false);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			logger.error(e.getMessage(), e);
+			return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@Operation(description = "Get End Point", summary = "This is a get specific Customer Invoice Api Using Id", responses = {
+			@ApiResponse(description = "Success", responseCode = "200"),
+			@ApiResponse(description = "Unauthorized / Invalid token", responseCode = "401") })
+	@GetMapping("/getCustomerInvoiceId/{customerId}")
+	public ResponseEntity<?> getCustomerId(@RequestHeader("Authorization") String auth,
+			@RequestHeader HttpHeaders httpHeaders,
+			@PathVariable String customerId) {
+		
+		ResponseEntity<?> response = customerService.getCustomerId(customerId,auth);
+		
+		TransactionContext context = responseGenerator.generateTransationContext(httpHeaders);
+		try {
+			return responseGenerator.successResponse(context, response.getBody(), HttpStatus.OK,false);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			logger.error(e.getMessage(), e);
+			return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@Operation(description = "Get End Point", summary = "This is a get specific Customer Invoice Api Using Email", responses = {
+			@ApiResponse(description = "Success", responseCode = "200"),
+			@ApiResponse(description = "Unauthorized / Invalid token", responseCode = "401") })
+	@GetMapping("/getCustomerInvoiceEmail/{customerEmail}")
+	public ResponseEntity<?> getCustomerEmail(@RequestHeader("Authorization") String auth,
+			@RequestHeader HttpHeaders httpHeaders,
+			@PathVariable String customerEmail) {
+		
+		ResponseEntity<?> response = customerService.getCustomer(customerEmail,auth);
 		
 		TransactionContext context = responseGenerator.generateTransationContext(httpHeaders);
 		try {

@@ -55,7 +55,10 @@ public class AdminController {
 
 	@Operation(description = "Get End Point", summary = "This is a Token Validation and Get User by email api", responses = {
 			@ApiResponse(description = "Success", responseCode = "200"),
-			@ApiResponse(description = "Unauthorized / Invalid token", responseCode = "401") })
+			@ApiResponse(description = "Unauthorized / Invalid token", responseCode = "401"),
+		    @ApiResponse(description = "Forbidden - Only ADMIN can access", responseCode = "403"),
+		    @ApiResponse(description = "User Not Found", responseCode = "204")
+			})
 	@GetMapping(value = "/getUser/{useremail}")
 	public ResponseEntity<?> getUser(@PathVariable("useremail") String useremail,
 			@RequestHeader("Authorization") String auth) {

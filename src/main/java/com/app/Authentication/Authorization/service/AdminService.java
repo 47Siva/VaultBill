@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -35,12 +36,14 @@ public class AdminService {
 		return userRepository.saveAndFlush(adminobj);
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> getadmindetials(String useremail, String auth) {
-
+		// Construct response
+		Map<String, Object> response = new HashMap<>();
+		
 		try {
 			String token = jwtService.extractToken(auth);
-			// Construct response
-			Map<String, Object> response = new HashMap<>();
+			
 			// Validate token
 			if (!jwtService.validateToken(token)) {
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token expired");
@@ -69,12 +72,12 @@ public class AdminService {
 					response.put("Status", HttpStatus.NO_CONTENT.toString());
 					response.put("message", "User id is invalid pleas check the ID");
 					response.put("Error", HttpStatus.NO_CONTENT);
-					return ResponseEntity.internalServerError().body(response);
+					return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
 				}
 			}
 		} catch (SignatureException e) {
-			e.printStackTrace();
-			throw new SignatureException("Token is invalid");
+			 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+		                .body("Invalid token signature");
 		}
 	}
 

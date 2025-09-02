@@ -79,48 +79,6 @@ public class CustomerControler {
 			return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
-    
-	@Operation(description = "Get End Point", summary = "This is a get specific Customer Api Using Email", responses = {
-			@ApiResponse(description = "Success", responseCode = "200"),
-			@ApiResponse(description = "Unauthorized / Invalid token", responseCode = "401") })
-	@GetMapping("/getCustomerEmail/{customerEmail}")
-	public ResponseEntity<?> getCustomerEmail(@RequestHeader("Authorization") String auth,
-			@RequestHeader HttpHeaders httpHeaders,
-			@PathVariable String customerEmail) {
-		
-		ResponseEntity<?> response = customerService.getCustomer(customerEmail,auth);
-		
-		TransactionContext context = responseGenerator.generateTransationContext(httpHeaders);
-		try {
-			return responseGenerator.successResponse(context, response.getBody(), HttpStatus.OK,false);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			logger.error(e.getMessage(), e);
-			return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-	}
 	
-
-	@Operation(description = "Get End Point", summary = "This is a get specific Customer Api Using Id", responses = {
-			@ApiResponse(description = "Success", responseCode = "200"),
-			@ApiResponse(description = "Unauthorized / Invalid token", responseCode = "401") })
-	@GetMapping("/getCustomerId/{customerId}")
-	public ResponseEntity<?> getCustomerId(@RequestHeader("Authorization") String auth,
-			@RequestHeader HttpHeaders httpHeaders,
-			@PathVariable String customerId) {
-		
-		ResponseEntity<?> response = customerService.getCustomerId(customerId,auth);
-		
-		TransactionContext context = responseGenerator.generateTransationContext(httpHeaders);
-		try {
-			return responseGenerator.successResponse(context, response.getBody(), HttpStatus.OK,false);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			logger.error(e.getMessage(), e);
-			return responseGenerator.errorResponse(context, e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-	}
 	
 }
